@@ -1,40 +1,73 @@
-
+import React, { useState } from 'react';
 import { Notes } from '../components/Notes';
-import { Container, Typography, Divider } from '@mui/material';
+import { Navigation } from '../components/Navigation';
+import { Container, Typography, Divider, TextField, Box } from '@mui/material';
 
+const Home = (props) => {
+  const { notes, setNotesData } = props;
+  const [searchTitle, setSearchTitle] = useState('');
 
-function Home (props) {
-    const { notes } = props;
-    return (
-        <Container maxWidth="md" className="mt-5" sx={{
-            backgroundColor: '#f5f5f5', // Warna latar belakang
-            padding: 3, // Memberikan ruang di sekitar konten
-            borderRadius: 8, // Memberikan sudut yang melengkung
-          }}>
-      <Typography variant="h4" component="div" className="bg-second bg-gradient text-white rounded p-1" textAlign="center" 
+  const filteredNotes = notes.filter((note) =>
+    note.title.toLowerCase().includes(searchTitle.toLowerCase())
+  );
+
+  const handleDeleteNote = (index) => {
+    const updatedNotes = [...notes];
+    updatedNotes.splice(index, 1);
+    setNotesData(updatedNotes);
+    localStorage.setItem('notesData', JSON.stringify(updatedNotes));
+  };
+
+  return (
+    <Container
+      maxWidth="lg"
+      className="mt-5"
       sx={{
-        backgroundColor: 'secondary.main', 
-        backgroundImage: theme => `radial-gradient(circle, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-        color: 'common.white', 
-        borderRadius: 2, 
-        padding: 1, 
-        marginBottom: 5,
-        marginTop: 5
-      }}>
-        NOTES
-      </Typography>
+        backgroundColor: '#f5f5f5',
+        padding: 3,
+        borderRadius: 8,
+      }}
+    >
+      <Box sx={{ textAlign: 'center', marginBottom: 2 }}>
+        <Typography
+          variant="h4"
+          component="div"
+          className="bg-second bg-gradient text-white rounded p-1"
+          sx={{
+            backgroundColor: '#001f3f',
+            color: 'common.white',
+            borderRadius: 2,
+            padding: 1,
+          }}
+        >
+          NOTES
+        </Typography>
 
-      {notes.map((note) => (
+        <Box sx={{ marginTop: 2 }}>
+          <Navigation />
+        </Box>
+      </Box>
+
+      <TextField
+        label="Search by Title"
+        variant="outlined"
+        fullWidth
+        margin="normal"
+        onChange={(e) => setSearchTitle(e.target.value)}
+      />
+
+      {filteredNotes.map((note, index) => (
         <div key={note.id}>
-          <Notes
-            title={note.title}
-            createdAt={note.createdAt}
-            body={note.body}
-          />
+          <Notes 
+          title={note.title} 
+          createdAt={note.createdAt} 
+          body={note.body}
+          onDelete={() => handleDeleteNote(index)} />
           <Divider />
         </div>
       ))}
     </Container>
-    );
-}
+  );
+};
+
 export { Home };
