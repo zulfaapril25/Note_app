@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Embed React ke HTML</title>
+</head>
+<body>
+  <div id="my-container"></div>
+
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+	<script>
+    // Buat element html menggunakan React.createElement
+    const h1 = React.createElement('h1', null, 'Hello, React!');
+
+    // Render komponen React ke DOM
+    const rootElement = document.getElementById("my-container");
+    ReactDOM.createRoot(rootElement).render(h1);
+  </script>
+</body>
+</html>
