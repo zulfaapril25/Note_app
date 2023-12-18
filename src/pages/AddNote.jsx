@@ -7,6 +7,7 @@ import { TextField, Button, Container, Typography, Box } from '@mui/material';
 const AddNote = ({ onAddNote }) => {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
+  const [isLoggedIn] = useState([]);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   const navigate = useNavigate();
@@ -59,7 +60,7 @@ const handleAddNote = async () => {
         </Typography>
 
         <Box sx={{ marginTop: 2 }}>
-          <Navigation />
+          <Navigation isLoggedIn={isLoggedIn}/>
         </Box>
       </Box>
     
