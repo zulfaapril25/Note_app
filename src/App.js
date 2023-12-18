@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import { Home } from './pages/Home';
 import { Navigation } from './components/Navigation'
@@ -39,12 +39,6 @@ function App() {
     window.location.href = '/';
   };
   
-  useEffect(() => {
-    console.log('IsLoggedIn:', isLoggedIn);
-    if (!isLoggedIn) {
-      window.location.href = '/login';
-    }
-  }, [isLoggedIn]);
 
   const handleDelete = async (id) => {
     try {
