@@ -1,9 +1,9 @@
 import React from 'react';
 import { Card, CardContent, Typography, Box, Grid, Divider, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+//import { deleteNote } from '../utils/network';
 
-
-const Notes = (props) => {
+const Notes = (props, onDelete) => {
   const cardStyle = {
     backgroundColor: 'lightblue',
     marginBottom: 20,
@@ -20,6 +20,14 @@ const Notes = (props) => {
     marginLeft: '95%', 
   };
 
+  const handleDelete = () => {
+    // Ensure onDelete is a function before calling it
+    if (props.onDelete && typeof props.onDelete === 'function') {
+      props.onDelete();
+    }
+  };
+
+
   return (
     <Card style={cardStyle}>
       <CardContent style={contentStyle}>
@@ -33,7 +41,7 @@ const Notes = (props) => {
         <Box mt={6}></Box>
         <Typography>{props.body}</Typography>
         <Box style={buttonContainerStyle}>
-          <IconButton aria-label="delete" color="error" onClick={props.onDelete}>
+          <IconButton aria-label="delete" color="error" onClick={handleDelete}>
             <DeleteIcon />
           </IconButton>
         </Box>

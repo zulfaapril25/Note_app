@@ -1,9 +1,16 @@
+ 
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { FiHome, FiPlusCircle } from 'react-icons/fi';
+import { Link, useNavigate } from 'react-router-dom';
+import { FiHome, FiPlusCircle, FiLogOut } from 'react-icons/fi';
 
-const Navigation = () => {
+const Navigation = ({isLoggedIn}) => {
+  const navigate = useNavigate();
   const iconSize = 24;
+
+  const handleLogout = () => {
+    localStorage.removeItem('accessToken');
+    navigate('/login');
+  };
 
   const linkStyle = {
     display: 'flex',
@@ -18,9 +25,23 @@ const Navigation = () => {
       <Link to="/">
         <FiHome size={iconSize}/>
       </Link>
-      <Link to="/add">
-        <FiPlusCircle size={iconSize}/>
-      </Link>
+      {isLoggedIn ? (
+        <>
+          <Link to="/add">
+            <FiPlusCircle size={iconSize}/>
+          </Link>
+          <FiLogOut size={iconSize} onClick={handleLogout} style={{ cursor: 'pointer' }} />
+        </>
+       ): (
+        <>
+        <Link to="/login">
+          <span>Login</span>
+        </Link>
+        <Link to="/register">
+          <span>Register</span>
+        </Link>
+        </>
+      )}
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navigation } from '../components/Navigation';
+import { addNote } from '../utils/network';
 import { TextField, Button, Container, Typography, Box } from '@mui/material';
 
 const AddNote = ({ onAddNote }) => {
@@ -14,17 +15,23 @@ const AddNote = ({ onAddNote }) => {
     setIsButtonDisabled(!(title.trim() !== '' && body.trim() !== ''));
   }, [title, body]);
 
-  const handleSubmit = () => {
-    const newNote = {
-      id: Date.now(),
-      title,
-      createdAt: new Date().toLocaleDateString(),
-      body,
-    };
+  // ...
 
-    onAddNote(newNote);
-    navigate('/');
-  };
+const handleAddNote = async () => {
+  try {
+    const response = await addNote({ title, body });
+    if (!response.error) {
+      onAddNote(response.data);
+      navigate('/');
+    } else if (response.code === 401) {
+      console.error('Unauthorized error:', response);
+    } else {
+      console.error('Add note error:', response.code, response.data);
+    }
+  } catch (error) {
+    console.error('Add note error:', error);
+  }
+};
 
   return (
     <Container
@@ -77,7 +84,7 @@ const AddNote = ({ onAddNote }) => {
       <Button
         variant="contained"
         color="primary"
-        onClick={handleSubmit}
+        onClick={handleAddNote}
         disabled={isButtonDisabled}
       >
         Submit
